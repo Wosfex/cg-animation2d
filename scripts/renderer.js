@@ -12,6 +12,16 @@ class Renderer {
         this.fps = fps;
         this.start_time = null;
         this.prev_time = null;
+        //everything defined in constructor because drawSlide is redone every frame
+        //slide0:
+        this.diamond = [
+            Vector3(400, 150, 1),
+            Vector3(500, 300, 1),
+            Vector3(400, 450, 1),
+            Vector3(300, 300, 1)
+        ];
+        this.teal = [0, 128, 128, 255];
+        this.tealTranslate = new Matrix(3,3);
     }
 
     // flag:  bool
@@ -66,8 +76,11 @@ class Renderer {
     //
     updateTransforms(time, delta_time) {
         // TODO: update any transformations needed for animation
-    }
+        //change positions and all side-hitting ifs
     
+
+    }
+
     //
     drawSlide() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -91,18 +104,28 @@ class Renderer {
     //
     drawSlide0() {
         // TODO: draw bouncing ball (circle that changes direction whenever it hits an edge)
-        
-        
+        // TODO: draw the ball every dt
+        //don't want to define anything at this  level, will be reset every frame
+
         // Following line is example of drawing a single polygon
         // (this should be removed/edited after you implement the slide)
-        let diamond = [
-            Vector3(400, 150, 1),
-            Vector3(500, 300, 1),
-            Vector3(400, 450, 1),
-            Vector3(300, 300, 1)
-        ];
-        let teal = [0, 128, 128, 255];
-        this.drawConvexPolygon(diamond, teal);
+
+        // let diamond = [
+        //     Vector3(400, 150, 1),
+        //     Vector3(500, 300, 1),
+        //     Vector3(400, 450, 1),
+        //     Vector3(300, 300, 1)
+        // ];
+        // let teal = [0, 128, 128, 255];
+        // this.drawConvexPolygon(diamond, teal);
+        // let tealTranslate = new Matrix(3,3);
+        mat3x3Translate(this.tealTranslate, 20, 30);
+        this.drawConvexPolygon(this.diamond, teal);
+
+        for (let i = 0; i < diamond.length; i++){
+            diamond[i] = Matrix.multiply(tealTranslate,diamond[i]);
+        }
+        
     }
 
     //
@@ -110,7 +133,7 @@ class Renderer {
         // TODO: draw at least 3 polygons that spin about their own centers
         //   - have each polygon spin at a different speed / direction
         
-        
+
     }
 
     //
@@ -127,10 +150,10 @@ class Renderer {
         // TODO: get creative!
         //   - animation should involve all three basic transformation types
         //     (translation, scaling, and rotation)
-        
-        
+
+
     }
-    
+
     // vertex_list:  array of object [Matrix(3, 1), Matrix(3, 1), ..., Matrix(3, 1)]
     // color:        array of int [R, G, B, A]
     drawConvexPolygon(vertex_list, color) {

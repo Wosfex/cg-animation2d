@@ -12,16 +12,25 @@ function mat3x3Identity(mat3x3) {
 // Set values of existing 3x3 matrix to the translate matrix
 function mat3x3Translate(mat3x3, tx, ty) {
     // mat3x3.values = ...;
+    mat3x3.values = [[1, 0, tx],
+                     [0, 1, ty],
+                     [0, 0, 1]];
 }
 
 // Set values of existing 3x3 matrix to the scale matrix
 function mat3x3Scale(mat3x3, sx, sy) {
-    // mat3x3.values = ...;
+     mat3x3.values = [[sx,0,0,],
+                      [0,sy,0]
+                      [0,0,1]];
+
 }
 
 // Set values of existing 3x3 matrix to the rotate matrix
 function mat3x3Rotate(mat3x3, theta) {
-    // mat3x3.values = ...;
+    let radTheta = theta * (Math.pi/180);
+    mat3x3.values = [[Math.cos(radTheta), -Math.sin(radTheta), 0],
+                    [Math.sin(radTheta), Math.cos(radTheta), 0],
+                    [0, 0, 1]];
 }
 
 // Create a new 3-component vector with values x,y,w
