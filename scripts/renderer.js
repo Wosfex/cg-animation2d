@@ -14,14 +14,38 @@ class Renderer {
         this.prev_time = null;
         //everything defined in constructor because drawSlide is redone every frame
         //slide0:
+        this.dx = 10;
+        this.dy = 10;
+        // this.diamond = [
+        //     Vector3(400, 150, 1),
+        //     Vector3(500, 300, 1),
+        //     Vector3(400, 450, 1),
+        //     Vector3(300, 300, 1)
+        // ];
         this.diamond = [
-            Vector3(400, 150, 1),
-            Vector3(500, 300, 1),
-            Vector3(400, 450, 1),
-            Vector3(300, 300, 1)
-        ];
+            Vector3(100, 50, 1),
+            Vector3(50, 150, 1),
+            Vector3(100, 250, 1),
+            Vector3(200, 250, 1),
+            Vector3(250, 150, 1),
+            Vector3(200, 50, 1)
+        ]
+        // console.log(this.diamond[0]);
         this.teal = [0, 128, 128, 255];
         this.tealTranslate = new Matrix(3,3);
+        mat3x3Translate(this.tealTranslate, 10, 10);
+        
+        this.polygon = [ 
+            Vector3(200, 50, 1),
+            Vector3(150, 150, 1),
+            Vector3(200, 250, 1),
+            Vector3(300, 250, 1),
+            Vector3(350, 150, 1),
+            Vector3(300, 50, 1)
+        ];
+        this.red = [200, 0, 0, 255];
+        this.redRotate = new Matrix(3,3);
+        mat3x3Rotate(this.redRotate, 10, 10);
     }
 
     // flag:  bool
@@ -77,7 +101,29 @@ class Renderer {
     updateTransforms(time, delta_time) {
         // TODO: update any transformations needed for animation
         //change positions and all side-hitting ifs
-    
+        // console.log(this.diamond[1].values[0]);
+        
+        for (let i=-0; i< this.diamond.length; i++) {
+            // console.log(this.diamond();
+            if(this.diamond[i].values[0] >= this.canvas.width){
+                //hits right edge
+                mat3x3Translate(this.tealTranslate, -this.dx, -this.dy);
+            }
+            if(this.diamond[i].values[0] <= 0) {
+                //hits left edge
+                mat3x3Translate(this.tealTranslate, -this.dx, this.dy);
+            }
+            if(this.diamond[i].values[1] <= 0) {
+                //hits bottom
+                mat3x3Translate(this.tealTranslate, this.dx, this.dy);
+            }
+            if(this.diamond[i].values[1] >= this.canvas.height){
+                //hits top
+                mat3x3Translate(this.tealTranslate, -this.dx, -this.dy);
+                
+            }
+            
+        }
 
     }
 
@@ -110,20 +156,11 @@ class Renderer {
         // Following line is example of drawing a single polygon
         // (this should be removed/edited after you implement the slide)
 
-        // let diamond = [
-        //     Vector3(400, 150, 1),
-        //     Vector3(500, 300, 1),
-        //     Vector3(400, 450, 1),
-        //     Vector3(300, 300, 1)
-        // ];
-        // let teal = [0, 128, 128, 255];
-        // this.drawConvexPolygon(diamond, teal);
-        // let tealTranslate = new Matrix(3,3);
-        mat3x3Translate(this.tealTranslate, 20, 30);
-        this.drawConvexPolygon(this.diamond, teal);
-
-        for (let i = 0; i < diamond.length; i++){
-            diamond[i] = Matrix.multiply(tealTranslate,diamond[i]);
+        
+        this.drawConvexPolygon(this.diamond, this.teal);
+        for (let i = 0; i < this.diamond.length; i++){
+            
+            this.diamond[i] = Matrix.multiply([this.tealTranslate, this.diamond[i]]);
         }
         
     }
@@ -132,6 +169,11 @@ class Renderer {
     drawSlide1() {
         // TODO: draw at least 3 polygons that spin about their own centers
         //   - have each polygon spin at a different speed / direction
+        this.drawConvexPolygon(this.polygon, this.red);
+        for (let i = 0; i < this.polygon.length; i++){
+            
+            this.polygon[i] = Matrix.multiply([this.redRotate, this.polygon[i]]);
+        }
         
 
     }
