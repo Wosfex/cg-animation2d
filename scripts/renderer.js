@@ -16,12 +16,6 @@ class Renderer {
         //slide0:
         this.dx = 10;
         this.dy = 10;
-        // this.diamond = [
-        //     Vector3(400, 150, 1),
-        //     Vector3(500, 300, 1),
-        //     Vector3(400, 450, 1),
-        //     Vector3(300, 300, 1)
-        // ];
         this.diamond = [
             Vector3(100, 50, 1),
             Vector3(50, 150, 1),
@@ -33,19 +27,70 @@ class Renderer {
         // console.log(this.diamond[0]);
         this.teal = [0, 128, 128, 255];
         this.tealTranslate = new Matrix(3,3);
-        mat3x3Translate(this.tealTranslate, 10, 10);
+        mat3x3Translate(this.tealTranslate, 20, 20);
         
+        //slide1:
         this.polygon = [ 
-            Vector3(200, 50, 1),
-            Vector3(150, 150, 1),
+            Vector3(100, 50, 1),
+            Vector3(50, 150, 1),
+            Vector3(100, 250, 1),
             Vector3(200, 250, 1),
-            Vector3(300, 250, 1),
-            Vector3(350, 150, 1),
-            Vector3(300, 50, 1)
+            Vector3(250, 150, 1),
+            Vector3(200, 50, 1)
         ];
         this.red = [200, 0, 0, 255];
         this.redRotate = new Matrix(3,3);
-        mat3x3Rotate(this.redRotate, 10, 10);
+        mat3x3Rotate(this.redRotate, 5, 5);
+        this.redTranslate1 = new Matrix(3,3);
+        this.redTranslate2 = new Matrix(3,3);
+        this.redOrigin= new Matrix(3,3);
+        mat3x3Translate(this.redTranslate1, -150, -150);
+        mat3x3Translate(this.redTranslate2, 150, 150);
+        this.redOrigin = Matrix.multiply([this.redTranslate2, this.redRotate]);
+        // console.log(this.redOrigin);
+        this.redOrigin = Matrix.multiply([this.redOrigin, this.redTranslate1]);
+
+        this.orangePoly = [
+            Vector3(400, 150, 1),
+            Vector3(500, 300, 1),
+            Vector3(400, 450, 1),
+            Vector3(300, 300, 1)
+        ];
+        //add side-hitting ifs to a translate/rotate matrix translate 1 * rotate
+        this.orange = [200,150,0,255];
+        this.orangeRotate = new Matrix(3,3);
+        mat3x3Rotate(this.orangeRotate, -15, 15);
+        this.orangeTranslate1 = new Matrix(3,3);
+        this.orangeTranslate2 = new Matrix(3,3);
+        this.orangeOrigin= new Matrix(3,3);
+        mat3x3Translate(this.orangeTranslate1, -400, -300);
+        mat3x3Translate(this.orangeTranslate2, 400, 300);
+        this.orangeOrigin = Matrix.multiply([this.orangeTranslate2, this.orangeRotate]);
+        // console.log(this.redOrigin);
+        this.orangeOrigin = Matrix.multiply([this.orangeOrigin, this.orangeTranslate1]);
+
+        this.bluePoly = [
+            Vector3(450, 400, 1),
+            Vector3(400, 500, 1),
+            Vector3(500, 600, 1),
+            Vector3(600, 500, 1),
+            Vector3(550, 400, 1),
+        ];
+        //add side-hitting ifs to a translate/rotate matrix translate 1 * rotate
+        this.blue = [0,100,255,255];
+        this.blueRotate = new Matrix(3,3);
+        mat3x3Rotate(this.blueRotate, -10, 10);
+        this.blueTranslate1 = new Matrix(3,3);
+        this.blueTranslate2 = new Matrix(3,3);
+        this.blueOrigin= new Matrix(3,3);
+        mat3x3Translate(this.blueTranslate1, -500, -500);
+        mat3x3Translate(this.blueTranslate2, 500, 500);
+        this.blueOrigin = Matrix.multiply([this.blueTranslate2, this.blueRotate]);
+        // console.log(this.redOrigin);
+        this.blueOrigin = Matrix.multiply([this.blueOrigin, this.blueTranslate1]);
+
+
+        //slide2:
     }
 
     // flag:  bool
@@ -170,11 +215,23 @@ class Renderer {
         // TODO: draw at least 3 polygons that spin about their own centers
         //   - have each polygon spin at a different speed / direction
         this.drawConvexPolygon(this.polygon, this.red);
+        this.drawConvexPolygon(this.orangePoly, this.orange)
+        this.drawConvexPolygon(this.bluePoly, this.blue);
         for (let i = 0; i < this.polygon.length; i++){
             
-            this.polygon[i] = Matrix.multiply([this.redRotate, this.polygon[i]]);
+            this.polygon[i] = Matrix.multiply([this.redOrigin, this.polygon[i]]);
+            // this.polygon[i] = Matrix.multiply([this.redTranslate2, this.polygon[i]]);
+        }
+
+        for (let i = 0; i < this.orangePoly.length; i++){
+            this.orangePoly[i] = Matrix.multiply([this.orangeOrigin, this.orangePoly[i]]);
+            // this.polygon[i] = Matrix.multiply([this.redTranslate2, this.polygon[i]]);
         }
         
+        for (let i = 0; i < this.bluePoly.length; i++){
+            this.bluePoly[i] = Matrix.multiply([this.blueOrigin, this.bluePoly[i]]);
+            // this.polygon[i] = Matrix.multiply([this.redTranslate2, this.polygon[i]]);
+        }
 
     }
 
