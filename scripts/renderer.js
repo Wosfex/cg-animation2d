@@ -215,12 +215,18 @@ class Renderer {
 
 
         this.center = [
-            Vector3(400, 350, 1),
-            Vector3(350, 450, 1),
-            Vector3(400, 550, 1),
-            Vector3(500, 550, 1),
-            Vector3(550, 450, 1),
-            Vector3(500, 350, 1)
+            Vector3(100, 50, 1),
+            Vector3(50, 150, 1),
+            Vector3(100, 250, 1),
+            Vector3(200, 250, 1),
+            Vector3(250, 150, 1),
+            Vector3(200, 50, 1)
+            // Vector3(400, 350, 1),
+            // Vector3(350, 450, 1),
+            // Vector3(400, 550, 1),
+            // Vector3(500, 550, 1),
+            // Vector3(550, 450, 1),
+            // Vector3(500, 350, 1)
         ];
 
         // Polygon 1 stuff
@@ -238,8 +244,8 @@ class Renderer {
         this.tickerMemory2 = 0;
 
         // Origin Translate stuff
-        mat3x3Translate(this.centerPos, 150, 150);
-        mat3x3Translate(this.centerNeg, -150, -150);
+        mat3x3Translate(this.centerPos, 200, 200);
+        mat3x3Translate(this.centerNeg, -200, -200);
 
         // Decreasing stuff
         mat3x3Scale(this.centerScalarDec, 1.052, 1.052);
