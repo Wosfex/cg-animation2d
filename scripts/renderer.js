@@ -17,12 +17,23 @@ class Renderer {
         this.dx = 10;
         this.dy = 10;
         this.diamond = [
-            Vector3(100, 50, 1),
-            Vector3(50, 150, 1),
-            Vector3(100, 250, 1),
-            Vector3(200, 250, 1),
-            Vector3(250, 150, 1),
-            Vector3(200, 50, 1)
+            Vector3(100, 200, 1),
+            Vector3(145, 190, 1),
+            Vector3(175, 175, 1),
+            Vector3(190, 145, 1),
+            Vector3(200, 100, 1),
+            Vector3(190, 55, 1),
+            Vector3(200, 100, 1),
+            Vector3(190, 55, 1),
+            Vector3(175, 25, 1),
+            Vector3(145, 10, 1),
+            Vector3(100, 1, 1),
+            Vector3(55, 10, 1),
+            Vector3(25, 25, 1),
+            Vector3(10, 55, 1),
+            Vector3(1, 100, 1),
+            Vector3(25, 175, 1),
+            Vector3(55, 190, 1),
         ]
         // console.log(this.diamond[0]);
         this.teal = [0, 128, 128, 255];
@@ -76,7 +87,7 @@ class Renderer {
             Vector3(600, 500, 1),
             Vector3(550, 400, 1),
         ];
-        //add side-hitting ifs to a translate/rotate matrix translate 1 * rotate
+        // add side-hitting ifs to a translate/rotate matrix translate 1 * rotate
         this.blue = [0,100,255,255];
         this.blueRotate = new Matrix(3,3);
         mat3x3Rotate(this.blueRotate, -10, 10);
@@ -88,9 +99,161 @@ class Renderer {
         this.blueOrigin = Matrix.multiply([this.blueTranslate2, this.blueRotate]);
         // console.log(this.redOrigin);
         this.blueOrigin = Matrix.multiply([this.blueOrigin, this.blueTranslate1]);
+        
+        //slide2
+        this.slide2Poly = [
+            Vector3(100, 50, 1),
+            Vector3(50, 150, 1),
+            Vector3(100, 250, 1),
+            Vector3(200, 250, 1),
+            Vector3(250, 150, 1),
+            Vector3(200, 50, 1)
+        ];
+
+        this.slide2Poly2 = [
+            Vector3(400, 350, 1),
+            Vector3(350, 450, 1),
+            Vector3(400, 550, 1),
+            Vector3(500, 550, 1),
+            Vector3(550, 450, 1),
+            Vector3(500, 350, 1)
+        ];
+
+        // Polygon 1 stuff
+        this.slide2OrgDec = new Matrix(3,3);
+        this.slide2OrgInc = new Matrix(3,3);
+        this.slide2ScalarDec = new Matrix(3,3);
+        this.slide2ScalarInc = new Matrix(3,3);
+        this.slide2Pos = new Matrix(3,3);
+        this.slide2Neg = new Matrix(3,3);
+
+        // Used for maximum/minimum growth
+        this.ticker = 0;
+
+        // attempt for rate control, failed, ignore
+        this.tickerMemory = 0;
+
+        // Origin Translate stuff
+        mat3x3Translate(this.slide2Pos, 150, 150);
+        mat3x3Translate(this.slide2Neg, -150, -150);
+
+        // Decreasing stuff
+        mat3x3Scale(this.slide2ScalarDec, 1.052, 1.052);
+
+        this.slide2OrgDec = Matrix.multiply([this.slide2Pos, this.slide2ScalarDec]);
+        this.slide2OrgDec = Matrix.multiply([this.slide2OrgDec, this.slide2Neg]);
+
+        // Increasing stuff
+        mat3x3Scale(this.slide2ScalarInc, 0.95, 0.95);
+
+        this.slide2OrgInc = Matrix.multiply([this.slide2Pos, this.slide2ScalarInc]);
+        this.slide2OrgInc = Matrix.multiply([this.slide2OrgInc, this.slide2Neg]);
+
+        this.slide2OrgDec2 = new Matrix(3,3);
+        this.slide2OrgInc2 = new Matrix(3,3);
+        this.slide2ScalarDec2 = new Matrix(3,3);
+        this.slide2ScalarInc2 = new Matrix(3,3);
+        this.slide2Pos2 = new Matrix(3,3);
+        this.slide2Neg2 = new Matrix(3,3);
+
+        // Origin Translate stuff
+        mat3x3Translate(this.slide2Pos2, 450, 450);
+        mat3x3Translate(this.slide2Neg2, -450, -450);
+
+        // Decreasing stuff
+        mat3x3Scale(this.slide2ScalarDec2, 0.95, 0.95);
+
+        this.slide2OrgDec2 = Matrix.multiply([this.slide2Pos2, this.slide2ScalarDec2]);
+        this.slide2OrgDec2 = Matrix.multiply([this.slide2OrgDec2, this.slide2Neg2]);
+
+        // Increasing stuff
+        mat3x3Scale(this.slide2ScalarInc2, 1.052, 1.052);
+
+        this.slide2OrgInc2 = Matrix.multiply([this.slide2Pos2, this.slide2ScalarInc2]);
+        this.slide2OrgInc2 = Matrix.multiply([this.slide2OrgInc2, this.slide2Neg2]);
+        // slide3:
+        
+        this.greenPoly = [
+            Vector3(450, 400, 1),
+            Vector3(400, 500, 1),
+            Vector3(500, 600, 1),
+            Vector3(600, 500, 1),
+            Vector3(550, 400, 1),
+        ];
+        // add side-hitting ifs to a translate/rotate matrix translate 1 * rotate
+        this.green = [0,0,255,255];
+        this.greenRotate = new Matrix(3,3);
+        mat3x3Rotate(this.greenRotate, -5, -5);
+        this.greenTranslate1 = new Matrix(3,3);
+        this.greenTranslate2 = new Matrix(3,3);
+        this.greenOrigin= new Matrix(3,3);
+        mat3x3Translate(this.greenTranslate1, -300, -300);
+        mat3x3Translate(this.greenTranslate2, 300, 300);
+        this.greenOrigin = Matrix.multiply([this.greenTranslate1, this.greenRotate]);
+        this.greenOrigin = Matrix.multiply([this.greenOrigin, this.greenTranslate2]);
+
+        
+        this.greenPoly2 = [
+            Vector3(100, 50, 1),
+            Vector3(50, 150, 1),
+            Vector3(100, 250, 1),
+            Vector3(200, 250, 1),
+            Vector3(250, 150, 1),
+            Vector3(200, 50, 1),
+        ];
+        // add side-hitting ifs to a translate/rotate matrix translate 1 * rotate
+        this.green2 = [0,255,255,255];
+        this.greenRotate2 = new Matrix(3,3);
+        mat3x3Rotate(this.greenRotate2, 5, 5);
+        this.greenTranslate12 = new Matrix(3,3);
+        this.greenTranslate22 = new Matrix(3,3);
+        this.greenOrigin2= new Matrix(3,3);
+        mat3x3Translate(this.greenTranslate12, -300, -300);
+        mat3x3Translate(this.greenTranslate22, 300, 300);
+        this.greenOrigin2 = Matrix.multiply([this.greenTranslate12, this.greenRotate2]);
+        this.greenOrigin2 = Matrix.multiply([this.greenOrigin2, this.greenTranslate22]);
 
 
-        //slide2:
+        this.center = [
+            Vector3(400, 350, 1),
+            Vector3(350, 450, 1),
+            Vector3(400, 550, 1),
+            Vector3(500, 550, 1),
+            Vector3(550, 450, 1),
+            Vector3(500, 350, 1)
+        ];
+
+        // Polygon 1 stuff
+        this.centerOrgDec = new Matrix(3,3);
+        this.center2OrgInc = new Matrix(3,3);
+        this.centerScalarDec = new Matrix(3,3);
+        this.centerScalarInc = new Matrix(3,3);
+        this.centerPos = new Matrix(3,3);
+        this.centerNeg = new Matrix(3,3);
+
+        // Used for maximum/minimum growth
+        this.ticker2 = 0;
+
+        // attempt for rate control, failed, ignore
+        this.tickerMemory2 = 0;
+
+        // Origin Translate stuff
+        mat3x3Translate(this.centerPos, 150, 150);
+        mat3x3Translate(this.centerNeg, -150, -150);
+
+        // Decreasing stuff
+        mat3x3Scale(this.centerScalarDec, 1.052, 1.052);
+
+        this.centerOrgDec = Matrix.multiply([this.centerPos, this.centerScalarDec]);
+        this.centerOrgDec = Matrix.multiply([this.centerOrgDec, this.centerNeg]);
+
+        // Increasing stuff
+        mat3x3Scale(this.centerScalarInc, 0.95, 0.95);
+
+        this.centerOrgInc = Matrix.multiply([this.centerPos, this.centerScalarInc]);
+        this.centerOrgInc = Matrix.multiply([this.centerOrgInc, this.centerNeg]);
+
+        
     }
 
     // flag:  bool
@@ -156,7 +319,7 @@ class Renderer {
             }
             if(this.diamond[i].values[0] <= 0) {
                 //hits left edge
-                mat3x3Translate(this.tealTranslate, -this.dx, this.dy);
+                mat3x3Translate(this.tealTranslate, this.dx, this.dy);
             }
             if(this.diamond[i].values[1] <= 0) {
                 //hits bottom
@@ -164,7 +327,7 @@ class Renderer {
             }
             if(this.diamond[i].values[1] >= this.canvas.height){
                 //hits top
-                mat3x3Translate(this.tealTranslate, -this.dx, -this.dy);
+                mat3x3Translate(this.tealTranslate, this.dx, -this.dy);
                 
             }
             
@@ -241,6 +404,29 @@ class Renderer {
         //   - have each polygon grow / shrink different sizes
         //   - try at least 1 polygon that grows / shrinks non-uniformly in the x and y directions
 
+        // for (let i = 0; i < this.bluePoly.length; i++){
+        //     this.bluePoly[i] = Matrix.multiply([this.blueOrigin, this.bluePoly[i]]);
+        //     // this.polygon[i] = Matrix.multiply([this.redTranslate2, this.polygon[i]]);
+        // }
+        this.drawConvexPolygon(this.slide2Poly, [0,0,255,255]);
+        this.drawConvexPolygon(this.slide2Poly2, this.red);
+        
+        for(let i = 0; i<this.slide2Poly.length; i++){
+            if((0<= this.ticker) && (this.ticker <= 300)){
+                this.slide2Poly[i] = Matrix.multiply([this.slide2OrgDec, this.slide2Poly[i]]);
+                this.slide2Poly2[i] = Matrix.multiply([this.slide2OrgDec2, this.slide2Poly2[i]]);
+                
+            }else if((0<= this.ticker) && (this.ticker <= 600)){
+                this.slide2Poly[i] = Matrix.multiply([this.slide2OrgInc, this.slide2Poly[i]]);
+                this.slide2Poly2[i] = Matrix.multiply([this.slide2OrgInc2, this.slide2Poly2[i]]);
+
+            }else{
+                this.ticker = 0;
+                i+=this.slide2Poly.length;
+            }
+            this.ticker+=1;
+        }
+
 
     }
 
@@ -249,6 +435,31 @@ class Renderer {
         // TODO: get creative!
         //   - animation should involve all three basic transformation types
         //     (translation, scaling, and rotation)
+        this.drawConvexPolygon(this.center, [0,0,255,255]);
+        
+        for(let i = 0; i<this.center.length; i++){
+            if((0<= this.ticker2) && (this.ticker2 <= 300)){
+                this.center[i] = Matrix.multiply([this.centerOrgDec, this.center[i]]);
+                
+            }else if((0<= this.ticker2) && (this.ticker2 <= 600)){
+                this.center[i] = Matrix.multiply([this.centerOrgInc, this.center[i]]);
+
+            }else{
+                this.ticker2 = 0;
+                i+=this.center.length;
+            }
+            this.ticker2+=1;
+        }
+        this.drawConvexPolygon(this.greenPoly, this.green);
+        this.drawConvexPolygon(this.greenPoly2, this.green2);
+        for (let i = 0; i < this.greenPoly.length; i++){
+            this.greenPoly[i] = Matrix.multiply([this.greenOrigin, this.greenPoly[i]]);
+
+        }
+        for (let i = 0; i < this.greenPoly2.length; i++){
+            this.greenPoly2[i] = Matrix.multiply([this.greenOrigin2, this.greenPoly2[i]]);
+            
+        }
 
 
     }
