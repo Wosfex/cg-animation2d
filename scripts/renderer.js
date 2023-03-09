@@ -161,13 +161,13 @@ class Renderer {
         mat3x3Translate(this.slide2Neg2, -450, -450);
 
         // Decreasing stuff
-        mat3x3Scale(this.slide2ScalarDec2, 0.95, 0.95);
+        mat3x3Scale(this.slide2ScalarDec2, .95, 1.05);
 
         this.slide2OrgDec2 = Matrix.multiply([this.slide2Pos2, this.slide2ScalarDec2]);
         this.slide2OrgDec2 = Matrix.multiply([this.slide2OrgDec2, this.slide2Neg2]);
 
         // Increasing stuff
-        mat3x3Scale(this.slide2ScalarInc2, 1.052, 1.052);
+        mat3x3Scale(this.slide2ScalarInc2, 1.052, 0.95);
 
         this.slide2OrgInc2 = Matrix.multiply([this.slide2Pos2, this.slide2ScalarInc2]);
         this.slide2OrgInc2 = Matrix.multiply([this.slide2OrgInc2, this.slide2Neg2]);
